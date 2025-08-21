@@ -34,7 +34,7 @@ $graphQuery += "     | where type == 'microsoft.web/certificates'"
 $graphQuery += "     | extend certThumbprint = tostring(properties.thumbprint), canonicalName = tostring(properties.canonicalName)" 
 $graphQuery += "     | where isnotempty(canonicalName)" 
 $graphQuery += "     | project certSubscriptionId = subscriptionId, certName = name, certId = id, certResourceGroup = tostring(properties.resourceGroup), certExpiration = properties.expirationDate, certThumbprint, canonicalName"
-$graphQuery += "   ) on $left.thumbprint == $right.certThumbprint"
+$graphQuery += '   ) on $left.thumbprint == $right.certThumbprint'
 $graphQuery += " | project siteSubscriptionId, siteName, siteId, siteResourceGroup, publicNetworkAccess, clientCertEnabled, thumbprint, certSubscriptionId, certName, certId, certResourceGroup, certExpiration, canonicalName"
 
 # Find App Services impacted by the DigiCert Certificate Issuance and Renewal changes
