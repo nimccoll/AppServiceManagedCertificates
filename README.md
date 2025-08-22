@@ -3,17 +3,13 @@ Sample PowerShell script that finds Azure App Services using the App Service Man
 
 1. Public network access is disabled
 1. Client certificate authentication is enabled
-1. App Service authentication is enabled and required
 1. A Deny All public IP address restriction is in place
 
 ## Prerequisites
 1. Install the latest Azure CLI [https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 1. Install the Resource Graph extension for the Azure CLI [https://learn.microsoft.com/en-us/azure/governance/resource-graph/first-query-azurecli#install-the-extension](https://learn.microsoft.com/en-us/azure/governance/resource-graph/first-query-azurecli#install-the-extension)
-1. Install the App Service AuthV2 extension for the Azure CLI
 
-        az extension add authV2
-
-1. To make sure you identify all impacted resources, the account that executes this script must have at least Reader access to all of the subscriptions in your tenant.
+1. To make sure you identify all impacted resources, the account that executes this script must have at least Reader access to all of the subscriptions that will be scanned.
 
 ## WebAppsASMC.ps1
 
@@ -28,7 +24,6 @@ Sample PowerShell script that finds Azure App Services using the App Service Man
 - PublicNetworkAccess
 - ClientCertEnabled
 - WebsiteLoadCertificates
-- AuthSettingsDenyPublicAccess
 - IpRestrictionsDenyPublicAccess
 - HostName
 - Thumbprint

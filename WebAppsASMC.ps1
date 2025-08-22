@@ -55,22 +55,12 @@ Do {
     
             $appSettings = az webapp config appsettings list --name $_.siteName --resource-group $_.siteResourceGroup --subscription $_.siteSubscriptionId --output json | ConvertFrom-Json
             $ipRestrictions = az webapp config access-restriction show --name $_.siteName --resource-group $_.siteResourceGroup --subscription $_.siteSubscriptionId --output json | ConvertFrom-Json
-            $authSettings = az webapp auth show --name $_.siteName --resource-group $_.siteResourceGroup --subscription $_.siteSubscriptionId --output json | ConvertFrom-Json
     
             # Capture the website load certificates setting
             $websiteLoadCertificates = ""
             $appSettings | ForEach-Object {
                 if ($_.name -eq "WEBSITE_LOAD_CERTIFICATES") {
                     $websiteLoadCertificates = $_.value
-                }
-            }
-    
-            # Is authentication enabled and required?
-            $authSettingsDenyPublicAccess = $false
-            $authEnabled = $authSettings.properties.platform.enabled
-            if ($authEnabled -eq $true) {
-                if ($authSettings.properties.globalValidation.requireAuthentication -eq $true) {
-                    $authSettingsDenyPublicAccess = $true
                 }
             }
     
@@ -85,9 +75,8 @@ Do {
             # Impacted resources meet one of the following criteria:
             #     - Public network access disabled
             #     - Client Certificate Authentication enabled
-            #     - App Service authentication enabled and required
             #     - A Deny All public IP restriction    
-            if ($_.publicNetworkAccess -eq "disabled" -or $_.clientCertEnabled -ne "false" -or $authSettingsDenyPublicAccess -eq $true -or $ipRestrictionsDenyPublicAccess -eq $true) {
+            if ($_.publicNetworkAccess -eq "disabled" -or $_.clientCertEnabled -ne "false" -or $ipRestrictionsDenyPublicAccess -eq $true) {
                 $webApp = @()
                 $webApp = [PSCustomObject]@{
                     SiteSubscriptionId = $_.siteSubscriptionId
@@ -97,7 +86,6 @@ Do {
                     PublicNetworkAccess = $_.publicNetworkAccess
                     ClientCertEnabled = $_.clientCertEnabled
                     WebsiteLoadCertificates = $websiteLoadCertificates
-                    AuthSettingsDenyPublicAccess = $authSettingsDenyPublicAccess
                     IpRestrictionsDenyPublicAccess = $ipRestrictionsDenyPublicAccess
                     HostName = $_.hostName
                     Thumbprint = $_.thumbprint
