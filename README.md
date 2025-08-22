@@ -2,7 +2,7 @@
 Sample PowerShell script that finds Azure App Services using the App Service Managed Certificate (ASMC) feature that will not be able to renew their certificate because some configuration feature on the site prevents public network access. Configurations that prevent certificate renewal include:
 
 1. Public network access is disabled
-1. Client certificate authentiction is enabled
+1. Client certificate authentication is enabled
 1. App Service authentication is enabled and required
 1. A Deny All public IP address restriction is in place
 
